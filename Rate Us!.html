@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .rating-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .stars {
+            display: inline-block;
+            direction: rtl;
+        }
+        .stars input {
+            display: none;
+        }
+        .stars label {
+            display: inline-block;
+            font-size: 2em;
+            color: #ccc;
+            cursor: pointer;
+        }
+        .stars input:checked ~ label,
+        .stars input:hover ~ label {
+            color: gold;
+        }
+        .moving-note {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .moving-note span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: moveText 10s linear infinite;
+        }
+        @keyframes moveText {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+        .complaint-box {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="moving-note">
+        <span>We will be glad to see your review</span>
+    </div>
+
+    <div class="rating-container">
+        <h2>Rate Us</h2>
+        <form id="ratingForm">
+            <div class="stars">
+                <input type="radio" id="star5" name="rating" value="5"><label for="star5">&#9733;</label>
+                <input type="radio" id="star4" name="rating" value="4"><label for="star4">&#9733;</label>
+                <input type="radio" id="star3" name="rating" value="3"><label for="star3">&#9733;</label>
+                <input type="radio" id="star2" name="rating" value="2"><label for="star2">&#9733;</label>
+                <input type="radio" id="star1" name="rating" value="1"><label for="star1">&#9733;</label>
+            </div>
+            <div class="complaint-box" id="complaintBox">
+                <label for="complaint">Please describe your complaint:</label><br>
+                <textarea id="complaint" name="complaint" rows="4" cols="50"></textarea>
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.querySelectorAll('.stars input').forEach(star => {
+            star.addEventListener('change', () => {
+                const complaintBox = document.getElementById('complaintBox');
+                if (parseInt(star.value) <= 2) {
+                    complaintBox.style.display = 'block';
+                } else {
+                    complaintBox.style.display = 'none';
+                }
+            });
+        });
+
+        document.getElementById('ratingForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const rating = document.querySelector('input[name="rating"]:checked').value;
+            const complaint = document.getElementById('complaint').value;
+            const email = 'hyperalex62826282@gmail.com';
+            const subject = `Restaurant Rating: ${rating} Stars`;
+            const body = `Rating: ${rating} Stars\n\nComplaint: ${complaint}`;
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        });
+    </script>
+</body>
+</html>
